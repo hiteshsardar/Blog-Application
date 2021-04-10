@@ -43,6 +43,8 @@ class LoginController extends Controller
             } else {
     
                 $request -> session() -> put('admin_name', $data -> name);
+                $request -> session() -> put('admin_image', $data -> image);
+                
                 return redirect( route('admin.home'));
             }
 

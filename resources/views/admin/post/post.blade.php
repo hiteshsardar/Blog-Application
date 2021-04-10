@@ -80,9 +80,10 @@
                                     <label for="image">Image Upload</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" id="image" name="image" multiple>
+                                            <input type="file" id="image" name="image[]" multiple>
                                         </div>
                                     </div> 
+                                    <input type="text" id="img_titles">
                                     <div id="image-to-upload"></div>        
                                 </div>
                             </div>
@@ -136,17 +137,25 @@
                 reader.readAsDataURL(file);
 
                 reader.onload = function(e){
-                    var template = '<form action="/upload">'+
+                    var template = '<form>'+
                         '<br><img src="'+e.target.result+'" style="width:50px">&nbsp;&nbsp;'+
                         '<lavel>&nbsp;&nbsp;Image Title : </label>'+
-                        '<input type="text" name="title" placeholder="Title of Image">&nbsp;&nbsp;'+
-                        '<button class="btn btn-sm btn-info">&nbsp;&nbsp;Upload</button>'+
-                        '<button class="btn btn-sm btn-danger">&nbsp;&nbsp;Delete</button>'+        
+                        '<input type="text" id="img_title" placeholder="Title of Image">&nbsp;&nbsp;'+
+                        '<a class="btn btn-danger" href="#">Remove</a>'+        
                     '</form>';
-
+                    
                     $('#image-to-upload').append(template);
                 };
+
             });
+            
         });
+
+        $('#img_title').on('change', function(){
+            alert("Hitesh");
+            // var img_titles = $('#img_title').val();
+            // $('#img_titles').append(img_titles);
+        });
+
     </script>
 @endsection

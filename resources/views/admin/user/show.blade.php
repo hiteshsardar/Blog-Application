@@ -61,7 +61,7 @@
                                         <td>{{ $user -> name }}</td>
                                         <td>{{ $user -> email }}</td>
                                         <td>{{ $user -> created_at }}</td>
-                                        <td><form id="delete-form-{{ $user -> id }}" method="POST" 
+                                        <td class="text-center"><form id="delete-form-{{ $user -> id }}" method="POST" 
                                             action="{{ route('user.destroy', $user -> id) }}" style="display: none">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
@@ -72,7 +72,7 @@
                                                 document.getElementById('delete-form-{{ $user -> id }}').submit();
                                             } else {
                                                 event.preventDefault();
-                                            }">Delete</span></a>
+                                            }"><i class="fa fa-trash" style="color:rgb(233, 15, 15)"></i></span></a>
                                         </td>
                                     </tr>
                                 @endforeach

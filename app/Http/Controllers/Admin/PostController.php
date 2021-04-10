@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\user\post;
 use Illuminate\Http\Request;
 use App\Models\user\User;
-
+use App\Models\user\post_image;
 
 
 class PostController extends Controller
@@ -41,6 +41,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
+        $refrence_id = 0;
+
+        do {
+
+            $refrence_id = mt_rand( 1000000000, 9999999999 );
+            
+        } while ( post::where( 'post_id', $refrence_id )->exists() );
+
         $this->validate($request, [
 
             'title' => 'required|unique:posts,title',
@@ -51,6 +60,7 @@ class PostController extends Controller
         ]);
 
         $post = new post;
+        $post -> post_id = $refrence_id;
         $post -> title = $request -> title;
         $post -> sub_title = $request -> sub_title;
         $post -> slug = $request -> slug;
@@ -68,23 +78,37 @@ class PostController extends Controller
             return redirect(route('post.create')) -> with('message', "Select Author");
         }
 
-        if($request -> has('image')){
+        
+        if($request -> hasFile('image')){
 
-            $post -> image = $request -> file('image');
-            $rename_img = time().'.'.$post -> image -> getClientOriginalExtension();
-            $dest = public_path('/img');
-            $post -> image -> move($dest, $rename_img);
-            $post -> image = $rename_img;
+            foreach($request -> image as $file){
+
+                $post_img = new post_image;
+                // $this->validate($request, [
+                //     'img_title' => 'required',
+                // ]);
+                
+                print_r($request -> img_title);
+                $post_img -> post_id = $refrence_id;
+
+                $post_img -> image = $file;
+                
+                $rename_img = time().'.'.$post_img -> image -> getClientOriginalName();
+                $dest = public_path('/img');
+                $post_img -> image -> move($dest, $rename_img);
+                $post_img -> image = $rename_img;
+                $post_img -> save();
+              
+            }
+            
             $post -> save();
-
             return redirect(route('post.create')) -> with('success', "Post Created Successfully!");
 
         } else {
 
             return redirect(route('post.create')) -> with('message', "Input Image file");
-
+    
         }
-
 
     }
 
@@ -155,9 +179,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post_id)
     {
-        post::where('id', $id) -> delete();
+        post::where('post_id', $post_id) -> delete();
+        post_image::where('post_id', $post_id) -> delete();
         return redirect() -> back();
     }
 
@@ -167,24 +192,4 @@ class PostController extends Controller
         return view('admin.post.show', compact('posts'));
     }
 
-    public function check_image(Request $request){
-
-        print_r("Hitesh");
-
-        // $this->validate($request, [
-
-        //     'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:3072'
-
-        // ]);
-
-        // $image = $request -> file('image');
-        // $new_name = rand().'.'.$image -> getClientOriginalExtension();
-        // $image -> move(public_path('images'), $new_name);
-
-        // return response() -> json([
-        //     'message' => 'Image Uploaded Successfully',
-        //     'uploaded_image' => '<img src="/images/'.$new_name.'" class="img-thumbnail" width="300"/>',
-        //     'class_name' => 'alert-success'
-        // ]);
-    }
 }

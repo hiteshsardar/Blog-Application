@@ -34,7 +34,13 @@ Route::group(['namespace' => 'User'], function () {
     Route::get('user-register', 'RegisterController@index') -> middleware('user_auth') -> name('register');
     // User Registration
     Route::post('user-register', 'RegisterController@user_register') -> name('user_register');
+    // Registration Image
+    Route::post('user_image_crop', 'RegisterController@upload') -> name('user_image');
 
+    Route::post('post_like/{id}', 'PostController@Post_Likes') -> name('post_Like');
+    Route::post('post_dislike/{id}', 'PostController@Post_Dislikes') -> name('post_Dislike');
+    Route::post('comment_like/{id}', 'PostController@Comment_Likes') -> name('comment_Like');
+    Route::post('comment_dislike/{id}', 'PostController@Comment_Dislikes') -> name('comment_Dislike');
 
     // User Login
     Route::post('/checklogin','LoginController@checklogin');
@@ -93,9 +99,6 @@ Route::group(['namespace' => 'Admin'], function(){
     // List Search
     Route::get('/search','PostController@search');
 
-    // Check Image
-    Route::get('check_img', 'PostController@check_image') -> name('check_img');
-
     // Admin Registration View
     Route::get('admin-register', 'RegisterController@index') -> middleware('admin_auth') -> name('admin.register');
 
@@ -107,6 +110,9 @@ Route::group(['namespace' => 'Admin'], function(){
 
     // User list View
     Route::get('/user_list', 'UserController@show');
+
+    // Registration Image
+    Route::post('image_crop', 'RegisterController@upload') -> name('image_crop.upload');
 
     // Assending list
     Route::any('admin_assen','PostController@index') -> name('assending_order');

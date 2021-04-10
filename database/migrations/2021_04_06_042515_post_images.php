@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Comments extends Migration
+class PostImages extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class Comments extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('post_images', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('post_id');
-            $table->string('user_name',20);
-            $table->string('comments',100);
-            $table->integer('like') -> default(0);
-            $table->integer('dislike') -> default(0);
+            $table->string('image_title');
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class Comments extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('post_images');
     }
 }

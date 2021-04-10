@@ -12,7 +12,7 @@
 
             @foreach ($posts as $post)
                 <div class="post-preview">
-                <a href="{{ route('show', $post -> id) }}">
+                <a href="{{ route('show', $post -> post_id) }}">
                     <h2 class="post-title">
                         {{ $post -> title }}
                     </h2>

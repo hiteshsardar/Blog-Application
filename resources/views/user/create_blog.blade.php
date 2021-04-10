@@ -19,22 +19,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('blog') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ "Hi ".session('author_name') }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="/user_logout">LogOut</a>
-                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('blog') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ "WellCome ".session('author_name') }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/user_logout">LogOut</a>
+                        </div>
+                    </li>
+                    <div class="image" style="margin-top: 5px">
+                        <img src="{{  asset("user_img/".session('user_image')) }}" alt="User Image" height="30px" width="30px" alt="Avatar" style="border-radius: 50%;">
+                    </div>
                 </ul>
             </div>
         </div>
@@ -103,14 +107,14 @@
                                     <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" id="slug">
                                     <p id="p_slug"></p>
                                 </div>
-                                <div class="form-group">
+                                <div class="container">
                                     <label for="image">Image Upload</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" id="image" name="image">
-                                            {{-- <label class="custom-file-label" for="image">Choose file</label> --}}
+                                            <input type="file" id="image" name="image[]" multiple>
                                         </div>
-                                    </div>
+                                    </div> 
+                                    <div id="image-to-upload"></div>        
                                 </div>
 
                             <div class="card card-outline card-info">
@@ -149,5 +153,34 @@
 
 </body>
 <script src="{{ asset('js/validation.js') }}"></script>
+<script>
+    $('#image').on('change', function(e){
+        var files = e.target.files;
+
+        $.each(files, function(i, file){
+
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = function(e){
+                var template = '<form>'+
+                    '<br><img src="'+e.target.result+'" style="width:50px">&nbsp;&nbsp;'+
+                    '<lavel>&nbsp;&nbsp;Image Title : </label>'+
+                    '<input type="text" name="img_title" placeholder="Title of Image">&nbsp;&nbsp;'+
+                    '<a class="btn btn-danger" onclick="myFunction()">Remove</a>'+        
+                '</form>';
+
+                $('#image-to-upload').append(template);
+            };
+
+        });
+
+        function myFunction(){
+            alert("Hitesh");
+        }
+        
+    });
+
+</script>
 </html>
 

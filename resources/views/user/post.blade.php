@@ -17,14 +17,29 @@
 
                         <blockquote class="blockquote">{{ $posts['slug'] }}</blockquote>
 
-                        <p>{{ $posts['body'] }}</p>
-                        <a href="#">
-                            <img class="img-fluid" src="{{ asset('img/'.$posts['image']) }}" alt="Image Source isn't found.">
-                        </a>            
+                        <p>{{ $posts['body'] }} 
+                            &nbsp;&nbsp;<a name="like" id="like" onclick="Post_like()" style="cursor: pointer">
+                                <i class="fa fa-thumbs-o-up"></i>
+                                <label id="post_like">{{ $posts['like'] }}</label>
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp; 
+                            <a name="dislike" id="dislike" onclick="Post_Dislike()" style="cursor: pointer">
+                                <i class="fa fa-thumbs-o-down" style="color:red" ></i>
+                                <label id="post_dislike">{{ $posts['dislike'] }}</label>
+                            </a>
+                        </p>
+                        
+                            @foreach ($post_image as $post_img)
+                                <a href="#">
+                                    <img class="img-fluid" src="{{ asset('img/'.$post_img['image']) }}" 
+                                    alt="Image Source isn't found."><br>
+                                </a> 
+                                <label style="font-size: 15px">Img : {{ $loop->iteration }}</label><br><br>
+                            @endforeach
+                                   
 
                     </div>
                 </div><br>
-                <form action="{{ route('user_comment', $posts['id']) }}" method="POST">
+                <form action="{{ route('user_comment', $posts['post_id']) }}" method="POST">
                     {{ csrf_field() }}
                     <div class="card card-outline card-info">
                         <div class="card-header">
@@ -47,7 +62,18 @@
                 </form><br>
                 @foreach ($comments as $comment)
                     <p>{{ $comment -> user_name }}<br>
-                        {{ $comment -> comments }}</p>
+                        {{ $comment -> comments }}
+
+                        &nbsp;&nbsp;<a name="like" id="like" onclick="comment_like()" style="cursor: pointer">
+                            <i class="fa fa-thumbs-o-up"></i>
+                            <label id="comment_like">{{ $comment -> like }}</label>
+                        </a>&nbsp;&nbsp;&nbsp;&nbsp; 
+                        <a name="dislike" id="dislike" onclick="comment_Dislike()" style="cursor: pointer">
+                            <i class="fa fa-thumbs-o-down" style="color:red" ></i>
+                            <label id="comment_dislike">{{ $comment -> dislike }}</label>
+                        </a>
+
+                    </p>
                 @endforeach
                 {{-- {{ $comments -> links() }} --}}
                 
@@ -55,4 +81,75 @@
         </article>
 
         <hr>
+        <script>
+            function Post_like(){
+              
+                var _token = $('input[name = _token]').val();
+        
+                $.ajax({
+                  url:'{{ route("post_Like", $posts["post_id"]) }}',
+                  type:'post',
+                  data:{_token: _token},
+                  datatype:"JSON",
+        
+                  success : function(data){
+                    $("#post_like").text(data.like);
+                  }
+                });
+            
+            }
+
+            function Post_Dislike(){
+              
+              var _token = $('input[name = _token]').val();
+      
+              $.ajax({
+                url:'{{ route("post_Dislike", $posts["post_id"]) }}',
+                type:'post',
+                data:{_token: _token},
+                datatype:"JSON",
+      
+                success : function(data){
+                  $("#post_dislike").text(data.like);
+                }
+              });
+          
+            }
+
+            function comment_like(){
+              
+              var _token = $('input[name = _token]').val();
+      
+              $.ajax({
+                url:'{{ route("comment_Like", $posts["post_id"]) }}',
+                type:'post',
+                data:{_token: _token},
+                datatype:"JSON",
+      
+                success : function(data){
+                  $("#comment_like").text(data.like);
+                }
+              });
+          
+          }
+
+          function comment_Dislike(){
+            
+            var _token = $('input[name = _token]').val();
+    
+            $.ajax({
+              url:'{{ route("comment_Dislike", $posts["post_id"]) }}',
+              type:'post',
+              data:{_token: _token},
+              datatype:"JSON",
+    
+              success : function(data){
+                $("#comment_dislike").text(data.like);
+              }
+            });
+        
+          }
+      
+        </script>
     @endsection
+    

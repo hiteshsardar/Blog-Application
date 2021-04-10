@@ -95,19 +95,21 @@
                                         <td>{{ $post -> author_name }}</td>
                                         <td>{{ $post -> status }}</td>
                                         <td>{{ $post -> created_at }}</td>
-                                        <td><a href="{{ route('post.edit', $post -> id) }}">Edit</span></a></td>
-                                        <td><form id="delete-form-{{ $post -> id }}" method="POST" 
-                                            action="{{ route('post.destroy', $post -> id) }}" style="display: none">
+                                        <td class="text-center"><a href="{{ route('post.edit', $post -> id) }}">
+                                            <i class="fa fa-edit" style="color:rgb(7, 110, 7)"></i></span></a>
+                                        </td>
+                                        <td class="text-center"><form id="delete-form-{{ $post -> post_id }}" method="POST" 
+                                            action="{{ route('post.destroy', $post -> post_id) }}" style="display: none">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             </form>
                                             <a href="" onclick="
                                             if(confirm('Are you Sure, to Delete this Data?')){
                                                 event.preventDefault();
-                                                document.getElementById('delete-form-{{ $post -> id }}').submit();
+                                                document.getElementById('delete-form-{{ $post -> post_id }}').submit();
                                             } else {
                                                 event.preventDefault();
-                                            }">Delete</span></a>
+                                            }"><i class="fa fa-trash" style="color:rgb(233, 15, 15)"></i></span></a>
                                         </td>
                                     </tr>
                                 @endforeach

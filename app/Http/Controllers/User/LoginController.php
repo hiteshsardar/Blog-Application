@@ -43,6 +43,8 @@ class LoginController extends Controller
             } else {
     
                 $request -> session() -> put('author_name', $data -> name);
+                $request -> session() -> put('user_image', $data -> image);
+
                 return redirect('/');
             }
         } catch(\Exception $ex){
